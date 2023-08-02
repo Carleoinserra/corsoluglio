@@ -16,6 +16,7 @@ def allowed_file(filename):
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_image():
+    file = ""
     if request.method == 'POST':
         # Controlla se è stato fornito un file
         if 'file' not in request.files:
@@ -30,7 +31,7 @@ def upload_image():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return "Caricamento riuscito!"
+            return render_template('upload_success.html', filename = filename)
 
         return "File non valido. Le estensioni consentite sono: " + ", ".join(ALLOWED_EXTENSIONS)
 
